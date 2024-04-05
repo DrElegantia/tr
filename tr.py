@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-import plotly.express as px
 import streamlit as st
 
 st.title('Il modello più semplicistico di analisi dei costi del nucleare')
