@@ -24,7 +24,7 @@ st.divider()
 
 modello = st.radio(
     "Che profilo vuoi impostare al tuo modello?",
-    ["conservativo", "best case scenario", "worst case scenario", "personalizza modello"])
+    ["conservativo", "best case scenario", "worst case scenario",  'Zollino',"Azzecca", "personalizza modello",])
 
 if modello == "conservativo":
     i = 4
@@ -34,6 +34,40 @@ if modello == "conservativo":
     partenza = 2024
     apprendimento = 3
     Costo_base =  1.0
+
+    occupati_diretti = 1000
+
+    occupati_indiretti = 66
+    pil_diretti = 100
+    pil_indiretti = 50
+    pil_eco = 1
+
+    taglio =  0
+elif modello == "Zollino":
+    i = 4
+    t = 9
+
+    Progetti = 26
+    partenza = 2024
+    apprendimento = 1
+    Costo_base =  0.6
+
+    occupati_diretti = 1000
+
+    occupati_indiretti = 66
+    pil_diretti = 100
+    pil_indiretti = 50
+    pil_eco = 1
+
+    taglio =  0
+elif modello == "Azzecca":
+    i = 10
+    t = 7
+
+    Progetti = 26
+    partenza = 2024
+    apprendimento = 2
+    Costo_base =  0.8
 
     occupati_diretti = 1000
 
@@ -98,7 +132,7 @@ elif modello=="personalizza modello":
 
     Costo_base=st.slider(
         'Quanto stimi possa costare il FOAK annualmente? Seleziona un dato in miliardi di €',
-        1.0, 5.0,1.0)
+        0.6, 5.0,1.0)
 
     occupati_diretti=st.slider(
         f'A quanto ammonta la stima di occupazione diretta per reattore? Selezionare il numero di occupati per reattore',
