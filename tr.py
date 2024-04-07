@@ -58,7 +58,16 @@ pil_eco=st.slider(
     f"Si prevede un aumento della produttività per occupato dell'intera economia grazie all'adozione dell'energia nucleare, rispetto alla produttività senza energia nucleare, alla fine del progetto?",
     0, 100,1)
 
+genre = st.radio(
+    "Vuoi tagliare le pensioni?",
+    ["No", "dell'1% di pil", "del 2% del pil"])
 
+if genre == "No":
+    taglio=0
+elif genre == "dell'1% di pil":
+    taglio=1
+elif genre == "del 2% del pil":
+    taglio = 2
 
 
 def costo_opera(i, t, co):
@@ -283,7 +292,7 @@ st.plotly_chart(fig)
 df_def['Redditi da lavoro dipendente']=df_def['Stima pil RGS']*0.08
 df_def['Consumi_intermedi']=df_def['Stima pil RGS']*0.05
 df_def['Altre prestazioni sociali']=df_def['Stima pil RGS']*0.05
-df_def['Spesa pensionistica']=df_def['Spesa pensionistica/PIL']*df_def['Stima pil RGS']/100
+df_def['Spesa pensionistica']=(df_def['Spesa pensionistica/PIL']-taglio)*df_def['Stima pil RGS']/100
 df_def['Altre spese correnti']=df_def['Stima pil RGS']*0.03
 df_def['Interessi passivi']=df_def['Stima pil RGS']*0.035
 df_def['Totale spese in conto capitale']=df_def['Stima pil RGS']*0.035
