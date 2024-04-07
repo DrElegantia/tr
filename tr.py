@@ -41,19 +41,7 @@ apprendimento = st.slider(
 Costo_base=st.slider(
     'Quanto stimi possa costare il FOAK annualmente? Seleziona un dato in miliardi di €',
     1.0, 5.0,1.0)
-pil=st.slider(
-    f'A quanto stimi il pil nominale italiano al {partenza}? In miliardi di €',
-    1800, 3000,1900)
-debito=st.slider(
-    f'A quanto stimi il debito nominale italiano al {partenza}? In miliardi di €',
-    2700, 3000,2900)
 
-crescita=st.slider(
-    f'A che tasso ritieni possibile che cresca mediamente il paese senza nucleare? Il fondo monetario stima una crescita pari a 1%',
-    0, 15,1)
-deficit=st.slider(
-    f'Quanto deficit credi faccia mediamente il paese senza nucleare? Il fondo monetario stima un deficit pari a 3%',
-    0, 15,3)
 occupati_diretti=st.slider(
     f'Quanti occupati diretti per reattore?',
     500, 1200,1000)
@@ -83,12 +71,10 @@ a_results = []
 t_results = []
 c_results = []
 occupati_indiretti=occupati_indiretti/100
-crescita=crescita/100
-deficit=deficit/100
+
 Costo_base=Costo_base*1000000000
 i=i/100
-pil=pil*1000000000
-debito=debito*1000000000
+
 apprendimento=apprendimento/100
 
 for p in range(0,Progetti+0):
