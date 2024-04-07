@@ -327,3 +327,37 @@ fig = go.Figure(data=[trace1, trace2], layout=layout)
 
 # Mostrare il grafico
 st.plotly_chart(fig)
+
+# Creare le tracce per il grafico a linee
+trace1 = go.Scatter(x=df_def['Anno'], y=df_def['Stima crescita pil RGS'], mode='lines', name='crescita rgs')
+trace2 = go.Scatter(x=df_def['Anno'], y=df_def['Stima crescita pil Nucleare'], mode='lines', name='crescita stima pazzerella')
+
+# Creare il layout del grafico
+layout = go.Layout(
+    title='Stima Crescita PIL',
+    xaxis=dict(title='Anno'),
+    yaxis=dict(title='Stima Crescita PIL')
+)
+
+# Creare la figura
+fig = go.Figure(data=[trace1, trace2], layout=layout)
+
+# Mostrare il grafico
+st.plotly_chart(fig)
+
+# Creare le tracce per il grafico a linee
+trace1 = go.Scatter(x=df_def['Anno'], y=df_def['Indebitamento netto'], mode='lines', name='Indebitamento netto')
+trace2 = go.Scatter(x=df_def['Anno'], y=df_def['Indebitamento netto con nucleare'], mode='lines', name='Indebitamento netto con nucleare')
+
+# Creare il layout del grafico
+layout = go.Layout(
+    title='Indebitamento Netto',
+    xaxis=dict(title='Anno'),
+    yaxis=dict(title='Indebitamento Netto')
+)
+
+# Creare la figura
+fig = go.Figure(data=[trace1, trace2], layout=layout)
+
+# Mostrare il grafico
+st.plotly_chart(fig)
