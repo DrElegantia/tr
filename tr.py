@@ -32,9 +32,7 @@ t = st.slider(
 Progetti = st.slider(
     'Su quanti reattori vuoi basare il modello?',
     1, 30,26)
-partenza = st.slider(
-    'In che anno parte il progetto?',
-    2028, 2050,2029)
+partenza = 2024
 apprendimento = st.slider(
     'Che tasso di apprendimento stimi? Il tasso avrà effetto sia sul tempo di realizzazione che sul costo',
     1, 10,3)
@@ -282,3 +280,50 @@ fig = go.Figure(data=[trace1, trace2], layout=layout)
 # Mostrare il grafico
 st.plotly_chart(fig)
 
+df_def['Redditi da lavoro dipendente']=df_def['Stima pil RGS']*0.08
+df_def['Consumi_intermedi']=df_def['Stima pil RGS']*0.05
+df_def['Altre prestazioni sociali']=df_def['Stima pil RGS']*0.05
+df_def['Spesa pensionistica']=df_def['Spesa pensionistica/PIL']*df_def['Stima pil RGS']/100
+df_def['Altre spese correnti']=df_def['Stima pil RGS']*0.03
+df_def['Interessi passivi']=df_def['Stima pil RGS']*0.035
+df_def['Totale spese in conto capitale']=df_def['Stima pil RGS']*0.035
+
+df_def['Spese']=df_def['Spesa pensionistica']+df_def['Totale spese in conto capitale']+df_def['Altre spese correnti']+df_def['Interessi passivi']+df_def['Redditi da lavoro dipendente']+df_def['Redditi da lavoro dipendente']+df_def['Altre prestazioni sociali']+df_def['Consumi_intermedi']
+
+
+df_def['Entrate dirette']=df_def['Stima pil RGS']*0.16
+df_def['Entrate indirette']=df_def['Stima pil RGS']*0.15
+df_def['Entrate in conto capitale']=df_def['Stima pil RGS']*0.001
+df_def['Entrate contributi']=df_def['Stima pil RGS']*0.15
+df_def['Entrate altre']=df_def['Stima pil RGS']*0.04
+df_def['Entrate altre non tributarie']=df_def['Stima pil RGS']*0.01
+df_def['Entrate']=df_def['Entrate dirette']+df_def['Entrate indirette']+df_def['Entrate in conto capitale']+df_def['Entrate contributi']+df_def['Entrate altre']+df_def['Entrate altre non tributarie']
+df_def['Debito'] = df_def['Stima pil RGS'] * 150/100
+df_def['Indebitamento netto']=df_def['Entrate']-df_def['Spese']
+df_def['Debito'] = - df_def['Indebitamento netto'].cumsum() + df_def['Debito'].shift(1)
+df_def['Spese con nucleare']=df_def['Spese']+df_def['Quote']
+df_def['Entrate con nucleare']=df_def['Entrate']+df_def['PIL aggiuntivo nucleare']*0.5
+df_def['Indebitamento netto con nucleare']=df_def['Entrate con nucleare']-df_def['Spese con nucleare']
+df_def['Debito con nucleare'] = df_def['Stima pil RGS'] * 147/100
+df_def['Debito con nucleare'] = - df_def['Indebitamento netto con nucleare'].cumsum() + df_def['Debito con nucleare'].shift(1)
+
+# Calcola il rapporto debito/PIL e debito nucleare/PIL per ogni anno
+rapporto_debito_pil = df_def['Debito'] / df_def['Stima pil RGS']
+rapporto_debito_nucleare_pil = df_def['Debito con nucleare'] / df_def['PIL modello nucleare']
+
+# Creare le tracce per il grafico a linee
+trace1 = go.Scatter(x=df_def['Anno'], y=rapporto_debito_pil, mode='lines', name='Debito/Pil')
+trace2 = go.Scatter(x=df_def['Anno'], y=rapporto_debito_nucleare_pil, mode='lines', name='Debito/Pil nucleare')
+
+# Creare il layout del grafico
+layout = go.Layout(
+    title='Rapporto Debito/PIL',
+    xaxis=dict(title='Anno'),
+    yaxis=dict(title='Rapporto Debito/PIL')
+)
+
+# Creare la figura
+fig = go.Figure(data=[trace1, trace2], layout=layout)
+
+# Mostrare il grafico
+st.plotly_chart(fig)
