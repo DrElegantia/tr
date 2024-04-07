@@ -1,5 +1,9 @@
+#spoiler allert
+
+
 import pandas as pd
 import streamlit as st
+import plotly.graph_objs as go
 
 st.title('Il modello più semplicistico di analisi dei costi del nucleare')
 st.header('Nuclear is :blue[cool] :sunglasses:', divider='rainbow')
@@ -50,6 +54,24 @@ crescita=st.slider(
 deficit=st.slider(
     f'Quanto deficit credi faccia mediamente il paese senza nucleare? Il fondo monetario stima un deficit pari a 3%',
     0, 15,3)
+occupati_diretti=st.slider(
+    f'Quanti occupati diretti per reattore?',
+    500, 1200,1000)
+
+occupati_indiretti=st.slider(
+    f'Quanti occupati diretti per reattore?',
+    0, 100,66)
+pil_diretti=st.slider(
+    f"Quanto valore aggiunto prevedi che possa generare un dipendente diretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
+    0, 100,100)
+
+pil_indiretti=st.slider(
+    f"Quanto valore aggiunto prevedi che possa generare un dipendente indiretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
+    0, 100,50)
+pil_eco=st.slider(
+    f"Si prevede un aumento della produttività per occupato dell'intera economia grazie all'adozione dell'energia nucleare, rispetto alla produttività senza energia nucleare, alla fine del progetto?",
+    0, 100,1)
+
 
 
 
@@ -60,7 +82,7 @@ def costo_opera(i, t, co):
 a_results = []
 t_results = []
 c_results = []
-
+occupati_indiretti=occupati_indiretti/100
 crescita=crescita/100
 deficit=deficit/100
 Costo_base=Costo_base*1000000000
@@ -83,7 +105,7 @@ df['Interessi']=df.progetti-df.costo_netto
 
 
 
-import plotly.graph_objs as go
+
 
 # Definire i dati da tracciare
 trace = go.Scatter(x=df.index, y=df.progetti, mode='lines')
@@ -190,26 +212,82 @@ fig = go.Figure(data=[trace1, trace2], layout=layout)
 st.plotly_chart(fig)
 
 
-df_def['Pil']=pil*(1+crescita)**(df_def.index-partenza-1)
-df_def['Debito']=debito*(1+deficit-crescita)**(df_def.index-partenza-1)
-df_def['DebitoPIL']=df_def['Debito']/df_def['Pil']
-df_def['Debito1']=(debito+df_def['Quote'].cumsum())*(1+deficit-crescita)**(df_def.index-partenza-1)
-df_def['Pilcontributo']=df_def['Avanzamento'].astype(int)/Progetti
-df_def['Pil1']=(pil+df_def['Costo_netto']*0.5)*(1+crescita+(df_def['Pilcontributo']*0.4/100))**(df_def.index-partenza-1)
-df_def['DebitoPIL1']=df_def['Debito1']/df_def['Pil1']
-df_def['CreacitaPIL']=df_def['Pil']/df_def['Pil'].shift(1)-1
-df_def['CreacitaPIL1']=df_def['Pil1']/df_def['Pil1'].shift(1)-1
+import pandas as pd
 
+# Dati originali
+data = {
+    'Anno': [2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050, 2055, 2060, 2065, 2070],
+
+    'Popolazione [20-64]': [35.941, 35.184, 34.142, 32.906, 31.203, 29.330, 27.732, 26.730, 25.994, 25.353, 24.716, 23.940],
+
+    'Popolazione totale': [60.295, 59.641, 58.560, 57.906, 57.185, 56.370, 55.395, 54.165, 52.630, 50.906, 49.213, 47.722],
+    'Tasso di occupazione [15-64]': [56.0, 57.5, 61.1, 61.9, 63.0, 64.0, 64.6, 64.8, 64.9, 64.9, 64.9, 65.0],
+    'PIL reale (mld di € 2015)': [1.655, 1.574, 1.809, 1.879, 1.933, 1.994, 2.059, 2.146, 2.248, 2.355, 2.461, 2.564],
+    'Numero totale di pensionati (mgl)': [15.200, 14.761, 15.035, 15.705, 16.306, 16.959, 17.316, 17.108, 16.483, 15.766, 15.038, 14.390],
+    'Importo medio di pensione (€ 2015)': [13851, 15058, 15229, 15411, 15699, 15880, 16005, 16120, 16434, 17155, 18396, 19917],
+    'Spesa pensionistica/PIL': [15.6, 16.9, 16.1, 16.4, 16.8, 17.0, 17.0, 16.2, 15.2, 14.6, 14.3, 14.3]
+}
+
+popolazione = pd.DataFrame(data)
+
+# Creazione del DataFrame con tutti gli anni desiderati
+anni_desiderati = pd.DataFrame({'Anno': range(2015, 2071)})
+
+# Merge dei DataFrame per avere tutti gli anni con i relativi dati
+popolazione_anni_completi = pd.merge(anni_desiderati, popolazione, on='Anno', how='left')
+
+# Riempimento dei vuoti interpolando i dati
+popolazione_anni_completi_interpolati = popolazione_anni_completi.interpolate(method='linear', axis=0)
+
+pop=popolazione_anni_completi_interpolati
+pop['Numero occupati di 15−64 anni']=pop['Tasso di occupazione [15-64]']*pop['Popolazione [20-64]']*10000
+pop['PIL per occupato di 15−64 anni']=(pop['PIL reale (mld di € 2015)']*1000000000000)/(pop['Numero occupati di 15−64 anni'])
+
+df_def=result_df.groupby('Anno').agg({
+    'Quote':sum,
+    'Progetti':sum,
+    'Interessi':sum,
+    'Costo_netto':sum,
+    'Avanzamento':sum
+
+})
+df_def.Avanzamento=df_def.Avanzamento.cumsum()
+# Unione dei DataFrame 'df_def' e 'pop' sulla colonna 'Anno'
+df_def = df_def.merge(pop, on='Anno', how='left')
+
+
+def calculate_avanzamento_app(avanzamento):
+    if avanzamento % 1 != 0:
+        return int(avanzamento)+1
+    else:
+        return int(avanzamento)
+
+df_def['Avanzamento_app'] = df_def['Avanzamento'].apply(calculate_avanzamento_app)
+df_def.at[df_def.index[-1], 'Avanzamento_app'] = Progetti
+
+
+df_def['Stima pil RGS']=df_def['PIL per occupato di 15−64 anni']*df_def['Numero occupati di 15−64 anni']
+df_def['Numero addetti diretti nucleare']=occupati_diretti*df_def['Avanzamento_app']
+df_def['Numero addetti indiretti nucleare']=df_def['Numero addetti diretti nucleare']*occupati_indiretti
+df_def['Numero occupati di 15−64 anni mp']=df_def['Numero addetti diretti nucleare']+df_def['Numero addetti indiretti nucleare']+df_def['Numero occupati di 15−64 anni']
+df_def['PIL per addetto diretto modello']=df_def['PIL per occupato di 15−64 anni']*(1+pil_diretti/100)
+df_def['PIL per addetto indiretto modello']=df_def['PIL per occupato di 15−64 anni']*(1+pil_indiretti/100)
+df_def['PIL diretto nucleare']=df_def['PIL per addetto diretto modello']*df_def['Numero addetti diretti nucleare']
+df_def['PIL indiretto nucleare']=df_def['PIL per addetto indiretto modello']*df_def['Numero addetti indiretti nucleare']
+df_def['PIL aggiuntivo nucleare']=df_def['PIL diretto nucleare']+df_def['PIL indiretto nucleare']
+df_def['PIL modello nucleare']=df_def['PIL aggiuntivo nucleare']+df_def['Stima pil RGS']*(1+pil_eco*df_def['Avanzamento_app']/Progetti/100)
+df_def['Stima crescita pil RGS']=(df_def['Stima pil RGS']/df_def['Stima pil RGS'].shift(1)-1)*100
+df_def['Stima crescita pil Nucleare']=(df_def['PIL modello nucleare']/df_def['PIL modello nucleare'].shift(1)-1)*100
 
 # Creare le tracce per il grafico a linee
-trace1 = go.Scatter(x=df_def.index, y=df_def.DebitoPIL*100, mode='lines', name='FMI')
-trace2 = go.Scatter(x=df_def.index, y=df_def.DebitoPIL1*100, mode='lines', name='Modello stupido')
+trace1 = go.Scatter(x=df_def['Anno'], y=df_def['PIL modello nucleare'], mode='lines', name='stima pil')
+trace2 = go.Scatter(x=df_def['Anno'], y=df_def['Stima pil RGS'], mode='lines', name='pil rgs')
 
 # Creare il layout del grafico
 layout = go.Layout(
-    title=f'Rapporto Debito Pil dal {partenza} <br> Costo complessivo: {sum(df.progetti)/1000000000:.2f} mld € <br> Ipotesi: i={i}%, Tempo Foak ={t} anni, costo overnight FOAK  {Costo_base*t/1000000000:.2f} mld €. <br> Ipotesi macro: crescita annuale media = {crescita*100}%, deficit annuale medio = {deficit*100}% ',
+    title='Confronto Stima PIL',
     xaxis=dict(title='Anno'),
-    yaxis=dict(title='Rapporto Debito Pil (%)')
+    yaxis=dict(title='Stima PIL')
 )
 
 # Creare la figura
@@ -217,3 +295,4 @@ fig = go.Figure(data=[trace1, trace2], layout=layout)
 
 # Mostrare il grafico
 st.plotly_chart(fig)
+
