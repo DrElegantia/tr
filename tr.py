@@ -83,29 +83,29 @@ elif modello == "worst case scenario":
 elif modello=="personalizza modello":
 
     i = st.slider(
-        'Che tasso di  interesse prevedi per il costo del progetto?',
+        'Che tasso di  interesse prevedi per il costo del debito?',
         4, 20,4)
     t = st.slider(
         'In quanto tempo stimi venga realizzato il FOAK?',
         4, 30,7)
-
+    apprendimento = st.slider(
+        'Che tasso di apprendimento stimi? Il tasso avrà effetto sia sul tempo di realizzazione che sul costo',
+        1, 10,3)
     Progetti = st.slider(
         'Su quanti reattori vuoi basare il modello?',
         1, 30,26)
     partenza = 2024
-    apprendimento = st.slider(
-        'Che tasso di apprendimento stimi? Il tasso avrà effetto sia sul tempo di realizzazione che sul costo',
-        1, 10,3)
+
     Costo_base=st.slider(
         'Quanto stimi possa costare il FOAK annualmente? Seleziona un dato in miliardi di €',
         1.0, 5.0,1.0)
 
     occupati_diretti=st.slider(
-        f'Quanti occupati diretti per reattore?',
+        f'A quanto ammonta la stima di occupazione diretta per reattore? Selezionare il numero di occupati per reattore',
         500, 1200,1000)
 
     occupati_indiretti=st.slider(
-        f'Quanti occupati indiretti per occupato diretto per singolo reattore?',
+        f'Quanti occupati indiretti per occupato diretto per singolo reattore? Seleziona la percentuale di occupati indiretti per occupati diretti',
         0, 100,66)
     pil_diretti=st.slider(
         f"Quanto valore aggiunto prevedi che possa generare un dipendente diretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
