@@ -22,52 +22,112 @@ st.video(video_url)
 
 st.divider()
 
-i = st.slider(
-    'Che tasso di  interesse prevedi per il costo del progetto?',
-    4, 20,4)
-t = st.slider(
-    'In quanto tempo stimi venga realizzato il FOAK?',
-    4, 30,7)
+modello = st.radio(
+    "Che profilo vuoi impostare al tuo modello?",
+    ["conservativo", "best case scenario", "worst case scenario", "personalizza modello"])
 
-Progetti = st.slider(
-    'Su quanti reattori vuoi basare il modello?',
-    1, 30,26)
-partenza = 2024
-apprendimento = st.slider(
-    'Che tasso di apprendimento stimi? Il tasso avrà effetto sia sul tempo di realizzazione che sul costo',
-    1, 10,3)
-Costo_base=st.slider(
-    'Quanto stimi possa costare il FOAK annualmente? Seleziona un dato in miliardi di €',
-    1.0, 5.0,1.0)
+if modello == "conservativo":
+    i = 4
+    t = 15
 
-occupati_diretti=st.slider(
-    f'Quanti occupati diretti per reattore?',
-    500, 1200,1000)
+    Progetti = 26
+    partenza = 2024
+    apprendimento = 3
+    Costo_base =  1.0
 
-occupati_indiretti=st.slider(
-    f'Quanti occupati diretti per reattore?',
-    0, 100,66)
-pil_diretti=st.slider(
-    f"Quanto valore aggiunto prevedi che possa generare un dipendente diretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
-    0, 100,100)
+    occupati_diretti = 1000
 
-pil_indiretti=st.slider(
-    f"Quanto valore aggiunto prevedi che possa generare un dipendente indiretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
-    0, 100,50)
-pil_eco=st.slider(
-    f"Si prevede un aumento della produttività per occupato dell'intera economia grazie all'adozione dell'energia nucleare, rispetto alla produttività senza energia nucleare, alla fine del progetto?",
-    0, 100,1)
+    occupati_indiretti = 66
+    pil_diretti = 100
+    pil_indiretti = 50
+    pil_eco = 1
 
-genre = st.radio(
-    "Vuoi tagliare le pensioni?",
-    ["No", "dell'1% di pil", "del 2% del pil"])
+    taglio =  0
 
-if genre == "No":
-    taglio=0
-elif genre == "dell'1% di pil":
-    taglio=1
-elif genre == "del 2% del pil":
-    taglio = 2
+elif modello == "best case scenario":
+    i = 4
+    t = 10
+
+    Progetti = 26
+    partenza = 2024
+    apprendimento = 3
+    Costo_base = 1.0
+
+    occupati_diretti = 1200
+
+    occupati_indiretti = 70
+    pil_diretti = 100
+    pil_indiretti = 100
+    pil_eco = 2
+
+    taglio = 1
+elif modello == "worst case scenario":
+    i = 7
+    t = 20
+
+    Progetti = 26
+    partenza = 2024
+    apprendimento = 3
+    Costo_base = 1.0
+
+    occupati_diretti = 1200
+
+    occupati_indiretti = 50
+    pil_diretti = 100
+    pil_indiretti = 0
+    pil_eco = 2
+
+    taglio = 0
+
+
+elif modello=="personalizza modello":
+
+    i = st.slider(
+        'Che tasso di  interesse prevedi per il costo del progetto?',
+        4, 20,4)
+    t = st.slider(
+        'In quanto tempo stimi venga realizzato il FOAK?',
+        4, 30,7)
+
+    Progetti = st.slider(
+        'Su quanti reattori vuoi basare il modello?',
+        1, 30,26)
+    partenza = 2024
+    apprendimento = st.slider(
+        'Che tasso di apprendimento stimi? Il tasso avrà effetto sia sul tempo di realizzazione che sul costo',
+        1, 10,3)
+    Costo_base=st.slider(
+        'Quanto stimi possa costare il FOAK annualmente? Seleziona un dato in miliardi di €',
+        1.0, 5.0,1.0)
+
+    occupati_diretti=st.slider(
+        f'Quanti occupati diretti per reattore?',
+        500, 1200,1000)
+
+    occupati_indiretti=st.slider(
+        f'Quanti occupati diretti per reattore?',
+        0, 100,66)
+    pil_diretti=st.slider(
+        f"Quanto valore aggiunto prevedi che possa generare un dipendente diretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
+        0, 100,100)
+
+    pil_indiretti=st.slider(
+        f"Quanto valore aggiunto prevedi che possa generare un dipendente indiretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
+        0, 100,50)
+    pil_eco=st.slider(
+        f"Si prevede un aumento della produttività per occupato dell'intera economia grazie all'adozione dell'energia nucleare, rispetto alla produttività senza energia nucleare, alla fine del progetto?",
+        0, 100,1)
+
+    genre = st.radio(
+        "Vuoi tagliare le pensioni?",
+        ["No", "dell'1% di pil", "del 2% del pil"])
+
+    if genre == "No":
+        taglio=0
+    elif genre == "dell'1% di pil":
+        taglio=1
+    elif genre == "del 2% del pil":
+        taglio = 2
 
 
 def costo_opera(i, t, co):
