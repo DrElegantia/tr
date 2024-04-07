@@ -105,11 +105,11 @@ elif modello=="personalizza modello":
         500, 1200,1000)
 
     occupati_indiretti=st.slider(
-        f'Quanti occupati diretti per reattore?',
+        f'Quanti occupati indiretti per occupato diretto per singolo reattore?',
         0, 100,66)
     pil_diretti=st.slider(
         f"Quanto valore aggiunto prevedi che possa generare un dipendente diretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
-        0, 100,100)
+        0, 100,150)
 
     pil_indiretti=st.slider(
         f"Quanto valore aggiunto prevedi che possa generare un dipendente indiretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
