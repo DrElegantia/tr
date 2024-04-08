@@ -137,7 +137,7 @@ elif modello=="personalizza modello":
     partenza = 2024
 
     Costo_base=st.slider(
-        'Quanto stimi possa ammontare il costo overnight del FOAK annualmente? Seleziona un vsalore in miliardi di €',
+        'Quanto stimi possa ammontare il costo overnight del FOAK annualmente? Seleziona un valore in miliardi di €',
         0.6, 5.0,1.0, help="Il costo overnight rappresenta il costo complessivo per realizzare il reattore, al netto degli interessi, per comodità qui viene espresso annualmente. ")
     occupati_costruzione = st.slider(
         f'A quanto ammonta la stima di occupazione per la costruzione di ogni reattore? Selezionare il numero di occupati per reattore',
