@@ -123,8 +123,8 @@ elif modello=="personalizza modello":
         'In quanto tempo stimi venga realizzato il FOAK?',
         4, 30,7, help="FOAK=First-of-A-Kind, ovvero il primo reattore realizzato. Il tempo dei successivi reattori è dato dal tempo del FOAK e dal tasso di apprendimento. Il modello è realizzato in modo da far partire un reattore ogni anno.")
     apprendimento = st.slider(
-        'Che tasso di apprendimento stimi? ',
-        1, 10,3,help="Il tasso di apprendimento stima la curva di apprendimento che si prevede avrà il progetto. Il tasso per il modello avrà effetto sia sul tempo di realizzazione che sul costo con pari entità")
+        'Che tasso di apprendimento stimi? Se negativo, il tasso va ad aumentare tempi di realizzo e costi.',
+        -10, 10,3,help="Il tasso di apprendimento stima la curva di apprendimento che si prevede avrà il progetto. Il tasso per il modello avrà effetto sia sul tempo di realizzazione che sul costo con pari entità")
     Progetti = st.slider(
         'Su quanti reattori vuoi basare il modello?',
         1, 30,26,help="Il modello si basa sull'ipotesi che tutti i reattori appartengano allo stesso tipo")
@@ -401,13 +401,13 @@ df_def['Entrate contributi']=df_def['Stima pil RGS']*0.15
 df_def['Entrate altre']=df_def['Stima pil RGS']*0.04
 df_def['Entrate altre non tributarie']=df_def['Stima pil RGS']*0.01
 df_def['Entrate']=df_def['Entrate dirette']+df_def['Entrate indirette']+df_def['Entrate in conto capitale']+df_def['Entrate contributi']+df_def['Entrate altre']+df_def['Entrate altre non tributarie']
-df_def['Debito'] = df_def['Stima pil RGS'] * 150/100
+df_def['Debito'] = df_def['Stima pil RGS'] * 140/100
 df_def['Indebitamento netto']=df_def['Entrate']-df_def['Spese']
 df_def['Debito'] = - df_def['Indebitamento netto'].cumsum() + df_def['Debito'].shift(1)
 df_def['Spese con nucleare']=df_def['Spese']+df_def['Quote']
 df_def['Entrate con nucleare']=df_def['Entrate']+df_def['PIL aggiuntivo nucleare']*0.5
 df_def['Indebitamento netto con nucleare']=df_def['Entrate con nucleare']-df_def['Spese con nucleare']
-df_def['Debito con nucleare'] = df_def['Stima pil RGS'] * 147/100
+df_def['Debito con nucleare'] = df_def['Stima pil RGS'] * 140/100
 df_def['Debito con nucleare'] = - df_def['Indebitamento netto con nucleare'].cumsum() + df_def['Debito con nucleare'].shift(1)
 
 # Calcola il rapporto debito/PIL e debito nucleare/PIL per ogni anno
@@ -449,8 +449,8 @@ fig = go.Figure(data=[trace1, trace2], layout=layout)
 st.plotly_chart(fig)
 
 # Creare le tracce per il grafico a linee
-trace1 = go.Scatter(x=df_def['Anno'], y=df_def['Indebitamento netto'], mode='lines', name='Indebitamento netto')
-trace2 = go.Scatter(x=df_def['Anno'], y=df_def['Indebitamento netto con nucleare'], mode='lines', name='Indebitamento netto con nucleare')
+trace1 = go.Scatter(x=df_def['Anno'], y=df_def['Indebitamento netto']/df_def['Stima pil RGS']*100, mode='lines', name='Indebitamento netto')
+trace2 = go.Scatter(x=df_def['Anno'], y=df_def['Indebitamento netto con nucleare']/df_def['PIL modello nucleare']*100, mode='lines', name='Indebitamento netto con nucleare')
 
 # Creare il layout del grafico
 layout = go.Layout(
