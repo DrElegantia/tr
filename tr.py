@@ -360,11 +360,6 @@ df_def.Avanzamento=df_def.Avanzamento.cumsum()
 df_def = df_def.merge(pop, on='Anno', how='left')
 
 
-def calculate_avanzamento_app(avanzamento):
-    if avanzamento % 1 != 0:
-        return int(avanzamento)+1
-    else:
-        return int(avanzamento)
 
 df_def['Avanzamento_app'] = df_def['Avanzamento'].astype(int)
 df_def.at[df_def.index[-1], 'Avanzamento_app'] = Progetti
@@ -502,3 +497,96 @@ fig = go.Figure(data=[trace1, trace2, trace3], layout=layout)
 
 # Mostrare il grafico
 st.plotly_chart(fig)
+
+
+import streamlit as st
+
+# Definizione del testo con le formule LaTeX
+latex_text = r"""
+La formula per calcolare il costo dell'operazione in base al tasso di interesse e al tempo di realizzazione è:
+
+$$
+costo\_opera = co \times (1 + i)^t
+$$
+
+dove:
+- $costo\_opera$ è il costo dell'operazione,
+- $co$ è il costo base,
+- $i$ è il tasso di interesse,
+- $t$ è il tempo di realizzazione.
+
+La formula per calcolare il tempo di realizzazione di un progetto in base al tasso di apprendimento è:
+
+$$
+tempo = t \times (1 - apprendimento)^p
+$$
+
+dove:
+- $tempo$ è il tempo di realizzazione del progetto,
+- $t$ è il tempo di realizzazione del FOAK (First-of-A-Kind),
+- $apprendimento$ è il tasso di apprendimento,
+- $p$ è il numero di progetti realizzati.
+
+La formula per calcolare il costo netto di un progetto in base al tempo di realizzazione e al costo base è:
+
+$$
+costo\_netto = costo\_base \times tempo
+$$
+
+dove:
+- $costo\_netto$ è il costo netto del progetto,
+- $costo\_base$ è il costo base del progetto,
+- $tempo$ è il tempo di realizzazione del progetto.
+
+La formula per calcolare gli interessi in base al costo dell'operazione e al tempo di realizzazione è:
+
+$$
+Interessi = costo\_opera - costo\_netto
+$$
+
+dove:
+- $Interessi$ sono gli interessi,
+- $costo\_opera$ è il costo dell'operazione,
+- $costo\_netto$ è il costo netto del progetto.
+
+La formula per calcolare il valore aggiunto per occupato è:
+
+$$
+valore\_aggiunto = occupati \times valore\_aggiunto\_per\_occupato
+$$
+
+dove:
+- $valore\_aggiunto$ è il valore aggiunto,
+- $occupati$ è il numero di occupati,
+- $valore\_aggiunto\_per\_occupato$ è il valore aggiunto per occupato.
+
+La formula per calcolare il PIL in base al valore aggiunto e al numero di occupati è:
+
+$$
+PIL = valore\_aggiunto \times occupati
+$$
+
+dove:
+- $PIL$ è il Prodotto Interno Lordo,
+- $valore\_aggiunto$ è il valore aggiunto,
+- $occupati$ è il numero di occupati.
+
+La formula per calcolare il PIL in base al valore aggiunto per occupato, al numero di occupati e al taglio della spesa pensionistica è:
+
+$$
+PIL = (valore\_aggiunto\_per\_occupato \times occupati) \times (1 - taglio\_spesa\_pensionistica)
+$$
+
+dove:
+- $PIL$ è il Prodotto Interno Lordo,
+- $valore\_aggiunto\_per\_occupato$ è il valore aggiunto per occupato,
+- $occupati$ è il numero di occupati,
+- $taglio\_spesa\_pensionistica$ è il taglio della spesa pensionistica.
+"""
+
+# Utilizzo di st.markdown() per renderizzare il testo formattato in Markdown
+
+
+
+with st.expander("Come abbiamo fatto i conti"):
+    st.markdown(latex_text, unsafe_allow_html=True)
