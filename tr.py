@@ -24,7 +24,7 @@ st.divider()
 
 modello = st.radio(
     "Che profilo vuoi impostare al tuo modello?",
-    ["conservativo", "best case scenario", "worst case scenario",  'Zollino',"Azzecca", "personalizza modello",])
+    ["conservativo", "best case scenario", "worst case scenario",  'Zollino',"Azzecca", "personalizza modello"], help="Selezionando un modello verranno valorizzati in modo automatico i vari parametri, questi verranno riportati nei singoli grafici. Se si preferisce agira autonomamente nella modifica dei parametri è sufficiente selezionare l'opzione per personalizzare il modello")
 
 if modello == "conservativo":
     i = 4
@@ -118,43 +118,43 @@ elif modello=="personalizza modello":
 
     i = st.slider(
         'Che tasso di  interesse prevedi per il costo del debito?',
-        4, 20,4)
+        4, 20,4, help="Il tasso di interesse influenza il costo complessivo dell'operazione")
     t = st.slider(
         'In quanto tempo stimi venga realizzato il FOAK?',
-        4, 30,7)
+        4, 30,7, help="FOAK=First-of-A-Kind, ovvero il primo reattore realizzato. Il tempo dei successivi reattori è dato dal tempo del FOAK e dal tasso di apprendimento. Il modello è realizzato in modo da far partire un reattore ogni anno.")
     apprendimento = st.slider(
-        'Che tasso di apprendimento stimi? Il tasso avrà effetto sia sul tempo di realizzazione che sul costo',
-        1, 10,3)
+        'Che tasso di apprendimento stimi? ',
+        1, 10,3,help="Il tasso di apprendimento stima la curva di apprendimento che si prevede avrà il progetto. Il tasso per il modello avrà effetto sia sul tempo di realizzazione che sul costo con pari entità")
     Progetti = st.slider(
         'Su quanti reattori vuoi basare il modello?',
-        1, 30,26)
+        1, 30,26,help="Il modello si basa sull'ipotesi che tutti i reattori appartengano allo stesso tipo")
     partenza = 2024
 
     Costo_base=st.slider(
-        'Quanto stimi possa costare il FOAK annualmente? Seleziona un dato in miliardi di €',
-        0.6, 5.0,1.0)
+        'Quanto stimi possa ammontare il costo overnight del FOAK annualmente? Seleziona un vsalore in miliardi di €',
+        0.6, 5.0,1.0, help="Il costo overnight rappresenta il costo complessivo per realizzare il reattore, al netto degli interessi, per comodità qui viene espresso annualmente. ")
 
     occupati_diretti=st.slider(
         f'A quanto ammonta la stima di occupazione diretta per reattore? Selezionare il numero di occupati per reattore',
-        500, 1200,1000)
+        500, 1200,1000, help="Il PIL viene stimato attraveso l'occupazione per il valore aggiunto dato da ogni occupato diretto. Il numero di occupati è valorizzato in base allo stato di avanzamento del progetto")
 
     occupati_indiretti=st.slider(
         f'Quanti occupati indiretti per occupato diretto per singolo reattore? Seleziona la percentuale di occupati indiretti per occupati diretti',
-        0, 100,66)
+        0, 100,66, help="Il PIL viene stimato attraveso l'occupazione per il valore aggiunto dato da ogni occupato diretto. Il numero di occupati è valorizzato in base allo stato di avanzamento del progetto")
     pil_diretti=st.slider(
         f"Quanto valore aggiunto prevedi che possa generare un dipendente diretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
-        0, 100,150)
+        0, 150,100, help="Ogni occupato diretto genera un valore aggiunto la cui sommatoria può essere una buona stima del PIL")
 
     pil_indiretti=st.slider(
         f"Quanto valore aggiunto prevedi che possa generare un dipendente indiretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
-        0, 100,50)
+        0, 100,50, help="Ogni occupato diretto genera un valore aggiunto la cui sommatoria può essere una buona stima del PIL")
     pil_eco=st.slider(
         f"Si prevede un aumento della produttività per occupato dell'intera economia grazie all'adozione dell'energia nucleare, rispetto alla produttività senza energia nucleare, alla fine del progetto?",
-        0, 100,1)
+        0, 100,1, help="Il PIL oltre ad aumentare per effetto dell'occupazione diretta e indiretta aggiuntiva, può aumentare a seguito della migliorata produttività dell'economia grazie al cambiamento tecnologico. Qui è possibile valorizzare un coefficiente che andrà a moltiplicare il valore aggiunto per occupato dell'intera economia.")
 
     genre = st.radio(
-        "Vuoi tagliare le pensioni?",
-        ["No", "dell'1% di pil", "del 2% del pil"])
+        "Vuoi che il modello preveda un taglio della spesa pensionistica?",
+        ["No", "dell'1% di pil", "del 2% del pil"], help='Sulla base delle stime RGS il modello calcola la spesa epnsionistica, è possibile ridurre il suo impatto sui conti pubblici di alcuni punti di pil attraverso la selezione multipla.')
 
     if genre == "No":
         taglio=0
