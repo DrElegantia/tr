@@ -511,7 +511,7 @@ $$
 
 dove:
 - $costo\_opera$ è il costo dell'operazione,
-- $co$ è il costo base,
+- $co$ è il costo overnight,
 - $i$ è il tasso di interesse,
 - $t$ è il tempo di realizzazione.
 
@@ -527,27 +527,18 @@ dove:
 - $apprendimento$ è il tasso di apprendimento,
 - $p$ è il numero di progetti realizzati.
 
-La formula per calcolare il costo netto di un progetto in base al tempo di realizzazione e al costo base è:
+La formula per calcolare il costo overnight di un progetto in base al tasso di apprendimento è:
 
 $$
-costo\_netto = costo\_base \times tempo
-$$
-
-dove:
-- $costo\_netto$ è il costo netto del progetto,
-- $costo\_base$ è il costo base del progetto,
-- $tempo$ è il tempo di realizzazione del progetto.
-
-La formula per calcolare gli interessi in base al costo dell'operazione e al tempo di realizzazione è:
-
-$$
-Interessi = costo\_opera - costo\_netto
+costo overnight = co FOAK \times (1 - apprendimento)^p
 $$
 
 dove:
-- $Interessi$ sono gli interessi,
-- $costo\_opera$ è il costo dell'operazione,
-- $costo\_netto$ è il costo netto del progetto.
+- $co FOAK$ è il costo overnight del FOAK (First-of-A-Kind),
+- $apprendimento$ è il tasso di apprendimento,
+- $p$ è il numero di progetti realizzati.
+
+
 
 La formula per calcolare il valore aggiunto per occupato è:
 
@@ -571,17 +562,20 @@ dove:
 - $valore\_aggiunto$ è il valore aggiunto,
 - $occupati$ è il numero di occupati.
 
-La formula per calcolare il PIL in base al valore aggiunto per occupato, al numero di occupati e al taglio della spesa pensionistica è:
+La formula per calcolare il PIL aggiuntivo del progetto nucleare è:
 
 $$
-PIL = (valore\_aggiunto\_per\_occupato \times occupati) \times (1 - taglio\_spesa\_pensionistica)
+PILn = VAnd \times Ond + VAni \times Oni+ VAnc \times Onc
 $$
 
 dove:
-- $PIL$ è il Prodotto Interno Lordo,
-- $valore\_aggiunto\_per\_occupato$ è il valore aggiunto per occupato,
-- $occupati$ è il numero di occupati,
-- $taglio\_spesa\_pensionistica$ è il taglio della spesa pensionistica.
+- $PILn$ è il Prodotto Interno Lordo generato dal nucleare,
+- $VAnd$ è il valore aggiunto del singolo occupato diretto nel progetto nucleare,
+- $VAni$ è il valore aggiunto del singolo occupato indiretto nel progetto nucleare,
+- $VAnc$ è il valore aggiunto del singolo occupato nella fase di costruzione del progetto nucleare,
+- $Ond$ è il numero di occupati diretti nel progetto nucleare,
+- $Oni$ è il numero di occupati indiretti nel progetto nucleare,
+- $Onc$ è il numero di occupati nella fase di costuzione del progetto nucleare,
 """
 
 # Utilizzo di st.markdown() per renderizzare il testo formattato in Markdown
