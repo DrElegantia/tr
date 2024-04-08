@@ -38,8 +38,10 @@ if modello == "conservativo":
     occupati_diretti = 1000
 
     occupati_indiretti = 66
+    occupati_costruzione=2200
     pil_diretti = 100
     pil_indiretti = 50
+    pil_costruzione=0
     pil_eco = 1
 
     taglio =  0
@@ -53,10 +55,11 @@ elif modello == "Zollino":
     Costo_base =  0.6
 
     occupati_diretti = 1000
-
+    occupati_costruzione=2200
     occupati_indiretti = 66
     pil_diretti = 100
     pil_indiretti = 50
+    pil_costruzione=0
     pil_eco = 1
 
     taglio =  0
@@ -70,10 +73,11 @@ elif modello == "Azzecca":
     Costo_base =  0.8
 
     occupati_diretti = 1000
-
+    occupati_costruzione=2200
     occupati_indiretti = 66
     pil_diretti = 100
     pil_indiretti = 50
+    pil_costruzione=0
     pil_eco = 1
 
     taglio =  0
@@ -88,10 +92,11 @@ elif modello == "best case scenario":
     Costo_base = 1.0
 
     occupati_diretti = 1200
-
+    occupati_costruzione=2200
     occupati_indiretti = 70
     pil_diretti = 100
     pil_indiretti = 100
+    pil_costruzione=0
     pil_eco = 2
 
     taglio = 1
@@ -105,10 +110,11 @@ elif modello == "worst case scenario":
     Costo_base = 1.0
 
     occupati_diretti = 1200
-
+    occupati_costruzione=2200
     occupati_indiretti = 50
     pil_diretti = 100
     pil_indiretti = 0
+    pil_costruzione=0
     pil_eco = 2
 
     taglio = 0
@@ -133,7 +139,10 @@ elif modello=="personalizza modello":
     Costo_base=st.slider(
         'Quanto stimi possa ammontare il costo overnight del FOAK annualmente? Seleziona un vsalore in miliardi di €',
         0.6, 5.0,1.0, help="Il costo overnight rappresenta il costo complessivo per realizzare il reattore, al netto degli interessi, per comodità qui viene espresso annualmente. ")
-
+    occupati_costruzione = st.slider(
+        f'A quanto ammonta la stima di occupazione per la costruzione di ogni reattore? Selezionare il numero di occupati per reattore',
+        1500, 2500, 2200,
+        help="Il PIL viene stimato attraveso l'occupazione per il valore aggiunto dato da ogni occupato (diretto, indiretto e fase di costruzione). Il numero di occupati è valorizzato in base allo stato di avanzamento del progetto")
     occupati_diretti=st.slider(
         f'A quanto ammonta la stima di occupazione diretta per reattore? Selezionare il numero di occupati per reattore',
         500, 1200,1000, help="Il PIL viene stimato attraveso l'occupazione per il valore aggiunto dato da ogni occupato diretto. Il numero di occupati è valorizzato in base allo stato di avanzamento del progetto")
@@ -141,6 +150,11 @@ elif modello=="personalizza modello":
     occupati_indiretti=st.slider(
         f'Quanti occupati indiretti per occupato diretto per singolo reattore? Seleziona la percentuale di occupati indiretti per occupati diretti',
         0, 100,66, help="Il PIL viene stimato attraveso l'occupazione per il valore aggiunto dato da ogni occupato diretto. Il numero di occupati è valorizzato in base allo stato di avanzamento del progetto")
+
+    pil_costruzione=st.slider(
+        f"Quanto valore aggiunto prevedi che possa generare un dipendente nella fase di costruzione del reattore, rispetto alla media nazionale?",
+        0, 100,0, help="Ogni occupato (diretto, indiretto, nella fase di costruzione) genera un valore aggiunto la cui sommatoria può essere una buona stima del PIL")
+
     pil_diretti=st.slider(
         f"Quanto valore aggiunto prevedi che possa generare un dipendente diretto nel settore dell'energia nucleare, rispetto alla media nazionale?",
         0, 150,100, help="Ogni occupato diretto genera un valore aggiunto la cui sommatoria può essere una buona stima del PIL")
@@ -254,7 +268,8 @@ for _, row in df.iterrows():
         'Interessi':row['Interessi']/row['Tempo'],
         'Costo_netto': row['costo_netto']/row['Tempo'],
         'Quote': row['Quote'],
-        'Avanzamento':1/row['Tempo']
+        'Avanzamento':1/row['Tempo'],
+        'start':row['start']
     })
     new_dfs.append(project_df)
 
@@ -268,7 +283,8 @@ df_def=result_df.groupby('Anno').agg({
     'Progetti':sum,
     'Interessi':sum,
     'Costo_netto':sum,
-    'Avanzamento':sum
+    'Avanzamento':sum,
+    'start':sum
 
 })
 df_def.Avanzamento=df_def.Avanzamento.cumsum()
@@ -335,7 +351,8 @@ df_def=result_df.groupby('Anno').agg({
     'Progetti':sum,
     'Interessi':sum,
     'Costo_netto':sum,
-    'Avanzamento':sum
+    'Avanzamento':sum,
+    'start':sum
 
 })
 df_def.Avanzamento=df_def.Avanzamento.cumsum()
@@ -349,19 +366,22 @@ def calculate_avanzamento_app(avanzamento):
     else:
         return int(avanzamento)
 
-df_def['Avanzamento_app'] = df_def['Avanzamento'].apply(calculate_avanzamento_app)
+df_def['Avanzamento_app'] = df_def['Avanzamento'].astype(int)
 df_def.at[df_def.index[-1], 'Avanzamento_app'] = Progetti
 
 
 df_def['Stima pil RGS']=df_def['PIL per occupato di 15−64 anni']*df_def['Numero occupati di 15−64 anni']
+df_def['Numero costruttori nucleare']=df_def['start']*occupati_costruzione
 df_def['Numero addetti diretti nucleare']=occupati_diretti*df_def['Avanzamento_app']
 df_def['Numero addetti indiretti nucleare']=df_def['Numero addetti diretti nucleare']*occupati_indiretti
 df_def['Numero occupati di 15−64 anni mp']=df_def['Numero addetti diretti nucleare']+df_def['Numero addetti indiretti nucleare']+df_def['Numero occupati di 15−64 anni']
+df_def['PIL per costruttori nucleare']=df_def['PIL per occupato di 15−64 anni']*(1+pil_costruzione/100)
 df_def['PIL per addetto diretto modello']=df_def['PIL per occupato di 15−64 anni']*(1+pil_diretti/100)
 df_def['PIL per addetto indiretto modello']=df_def['PIL per occupato di 15−64 anni']*(1+pil_indiretti/100)
+df_def['PIL costruttori nucleare']=df_def['PIL per costruttori nucleare']*df_def['Numero costruttori nucleare']
 df_def['PIL diretto nucleare']=df_def['PIL per addetto diretto modello']*df_def['Numero addetti diretti nucleare']
 df_def['PIL indiretto nucleare']=df_def['PIL per addetto indiretto modello']*df_def['Numero addetti indiretti nucleare']
-df_def['PIL aggiuntivo nucleare']=df_def['PIL diretto nucleare']+df_def['PIL indiretto nucleare']
+df_def['PIL aggiuntivo nucleare']=df_def['PIL diretto nucleare']+df_def['PIL indiretto nucleare']+df_def['PIL costruttori nucleare']
 df_def['PIL modello nucleare']=df_def['PIL aggiuntivo nucleare']+df_def['Stima pil RGS']*(1+pil_eco*df_def['Avanzamento_app']/Progetti/100)
 df_def['Stima crescita pil RGS']=(df_def['Stima pil RGS']/df_def['Stima pil RGS'].shift(1)-1)*100
 df_def['Stima crescita pil Nucleare']=(df_def['PIL modello nucleare']/df_def['PIL modello nucleare'].shift(1)-1)*100
@@ -394,7 +414,7 @@ df_def['Totale spese in conto capitale']=df_def['Stima pil RGS']*0.035
 df_def['Spese']=df_def['Spesa pensionistica']+df_def['Totale spese in conto capitale']+df_def['Altre spese correnti']+df_def['Interessi passivi']+df_def['Redditi da lavoro dipendente']+df_def['Redditi da lavoro dipendente']+df_def['Altre prestazioni sociali']+df_def['Consumi_intermedi']
 
 
-df_def['Entrate dirette']=df_def['Stima pil RGS']*0.16
+df_def['Entrate dirette']=df_def['Stima pil RGS']*0.15
 df_def['Entrate indirette']=df_def['Stima pil RGS']*0.15
 df_def['Entrate in conto capitale']=df_def['Stima pil RGS']*0.001
 df_def['Entrate contributi']=df_def['Stima pil RGS']*0.15
@@ -461,6 +481,24 @@ layout = go.Layout(
 
 # Creare la figura
 fig = go.Figure(data=[trace1, trace2], layout=layout)
+
+# Mostrare il grafico
+st.plotly_chart(fig)
+
+# Creare le tracce per il grafico a linee
+trace1 = go.Scatter(x=df_def['Anno'], y=df_def['Numero costruttori nucleare'], mode='lines', name='Numero costruttori nucleare')
+trace2 = go.Scatter(x=df_def['Anno'], y=df_def['Numero addetti indiretti nucleare'], mode='lines', name='Numero addetti indiretti nucleare')
+trace3 = go.Scatter(x=df_def['Anno'], y=df_def['Numero addetti diretti nucleare'], mode='lines', name='Numero addetti diretti nucleare')
+
+# Creare il layout del grafico
+layout = go.Layout(
+    title='Occupazione nucleare',
+    xaxis=dict(title='Anno'),
+    yaxis=dict(title='Occupazione')
+)
+
+# Creare la figura
+fig = go.Figure(data=[trace1, trace2, trace3], layout=layout)
 
 # Mostrare il grafico
 st.plotly_chart(fig)
