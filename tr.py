@@ -7,13 +7,59 @@ import plotly.graph_objs as go
 
 st.title('Il modello più semplicistico di analisi dei costi del nucleare')
 st.header('Nuclear is :blue[cool] :sunglasses:', divider='rainbow')
-st.write("Questa app è stata creata da [Umberto Bertonelli](https://umbertobertonelli.it).")
+st.write("Questa app è stata creata da [Umberto Bertonelli](https://umbertobertonelli.it) con il gentilissimo supporto di [Comitato Nucleare e Ragione](https://www.instagram.com/nucleareeragione/).")
 st.write("La documentazione completa è disponibile [qui](https://github.com/DrElegantia/femminicidi_italia/tree/main).")
 st.divider()
 
-st.write("Questo applicativo è uno strumento che permette agli utenti di stimare i costi e il tempo di realizzazione di un progetto di energia nucleare. Il modello è basato su alcuni parametri, come il tasso di interesse, il tempo di realizzazione, il costo base annuale del progetto, il tasso di apprendimento e il numero di reattori da basare il modello. Il programma permette di scegliere l'anno di partenza del progetto e i tassi di crescita e deficit economici del paese senza nucleare. Il modello fornisce risultati in forma di grafici, tra cui uno che mostra il costo complessivo del progetto in relazione al numero di progetti realizzati, e un altro che mostra l'andamento del costo nel tempo. Il modello ha delle limitazioni, come la mancanza di considerazione di fattori come la variabilità dei costi di capitale e operativi, la capacità di gestire il rischio e la sicurezza, e la capacità di integrare il nucleare con altre fonti di energia rinnovabili. Tuttavia, il modello è utile per fornire una stima grossolana iniziale dei costi e del tempo di realizzazione di un progetto di energia nucleare.")
+st.subheader('Nucleare: ma quanto ci costi?')
 
-st.write("Se si vuole approfondire il tema attraverso documenti e opinione di esperti, qui trovate un'intervista al prof. Jacopo Buongiorno, Direttore del Centro per i sistemi avanzati di energia nucleare al MIT")
+st.subheader('In Italia da qualche anno ormai si è tornati a parlare di nucleare, e spesso una delle domande (*lecite*) che viene posta al centro del dibattito è: :blue[***MA QUANTO CI COSTA?***]')
+
+st.markdown("A questa domanda, vengono poste diverse risposte:")
+
+st.markdown("- **Il costo iniziale di costruzione di una centrale nucleare è elevato, ma nel lungo periodo potrebbe risultare vantaggioso in termini di riduzione dei costi energetici.**")
+st.markdown("- **Le tecnologie nucleari stanno evolvendo, e ci sono progetti per centrali più sicure e economicamente convenienti nel futuro.**")
+st.markdown(" - **Il costo dell'energia nucleare dipende da vari fattori, tra cui il prezzo del combustibile nucleare e le misure di sicurezza implementate.**")
+st.markdown(" - **Costerebbe di più uno scenario 100% rinnovabile.**")
+
+st.markdown("Chiaramente queste non sono le uniche risposte!")
+
+st.markdown("Essendo che il costo del nucleare, ma in generale di qualsiasi opera pubblica, dipende da molti fattori, abbiamo provato a rispondere diversamente, con qualche dato alla mano!")
+
+
+st.markdown("Abbiamo individuato i principali fattori che influenzano il costo del nucleare:")
+
+st.markdown("- **Il tasso di interesse per prendere a prestito le risorse necessarie**")
+st.markdown("- **Il tempo di costruzione**")
+st.markdown(" - **Il costo dell'opera, senza considerare il costo del fiannziamento (costo Overnight)**")
+st.markdown(" - **Il tasso di apprendimento**")
+
+st.write("Nel modello, ipotiziamo che lo stato voglia realizzare un certo numero di reattori (decisi dall'utente).")
+
+st.write('Date le ipotesi riferite al FOAK (First-Of-A-Kind), ovvero il primo progetto di reattore, calcoliamo gli interessi attraverso il tasso composto, sulla base del costo al netto dei costi di finanziamento,')
+st.write('In base al tasso di apprendimento andiamo a stimare tempi e costi dei successivi reattori.')
+st.write("Una volta definite tutte queste condizioni, ipotiziamo di far partire la costruzione di un reattore all'anno.")
+
+st.markdown("Per stimare gli impatti macroeconomici, abbiamo considerato lo scenario base de [***LE TENDENZE DI MEDIO-LUNGO PERIODO DEL SISTEMA PENSIONISTICO E SOCIO-SANITARIO – AGGIORNAMENTO 2023***](https://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/Attivit--i/Spesa-soci/Attivita_di_previsione_RGS/2023/Rapporto-2023.pdf#page=473) realizzato dalla Ragioneria Generale dello Stato.")
+st.markdown("Per la stima del PIL, abbiamo adottato la metodologia usata dall'Ufficio Parlamentare di Bilancio in occasione del report [***Cambiamenti nelle proiezioni di medio-lungo periodo della spesa pensionistica in Italia***](https://www.upbilancio.it/wp-content/uploads/2020/10/Flash-2_2020.pdf).")
+st.markdown("Per la stima della finanza pubblica, abbiamo usato i dati realtivi alla voci di entrata e alla voci di uscita in rapporto al pil presentati in [NADEF 2023](https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/analisi_progammazione/documenti_programmatici/nadef_2023/NADEF-2023.pdf#page=75), adottando alcuni accorgimento al fine di ricalcare quanto previsto dal [FMI](https://www.imf.org/en/Publications/CR/Issues/2022/07/28/Italy-2022-Article-IV-Consultation-Press-Release-Staff-Report-and-Statement-by-the-521484).")
+
+st.markdown(" Il PIL aggiuntivo realizzato con il nucleare, in accordo con il modello fornito da UPB, si basa sul prodotto fra occupati, dati dalla somma degli occupati nelle varie fasi di vita del reattore (costruzione e operatività) e dell'occupatzione indotta e indiretta, e relativo valore aggiunto. Inoltre, abbiamo previsto la possibilità di determinare un aumento in termini percentuali della produttività del settore dell'industria. Per la stima dell'occupazione abbiamo preso a riferimento [***Measuring Employment Generated by the Nuclear Power Sector***](https://www.oecd-nea.org/jcms/pl_14912) prodotto da NEA")
+
+st.write("Siamo consci che il nostro modello soffra di molte limitazioni, ad esempio:")
+
+st.markdown("- **La mancanza di considerazione di fattori come la variabilità dei costi di capitale e operativi**")
+st.markdown("- **Gli eventualli periodi recessivi futuri**")
+st.markdown(" - **La stima degli impatti di integrazione fra nucleare e altre fonti rinnovabili**")
+st.markdown(" - **Il tasso di apprendimento lineare e costante**")
+st.markdown(" - **I possibili ritardi accumulati dai progetti per impedimenti burocratici, sociali o di altra natura**")
+st.markdown(" - **Eventuali altri impatti di finanza pubblica che compromettano le casse dello stato**")
+st.markdown(" - **Non viene considerata l'energia prodotta**")
+
+
+st.markdown("Tuttavia, il modello è utile per fornire una stima grossolana iniziale dei costi e del tempo di realizzazione di un progetto di energia nucleare, oltre che del suo impatto sulla fiannza pubblica e le variabili macroeconomiche italiane.")
+
+st.write("Se si vuole approfondire il tema attraverso documenti e opinione di esperti, qui trovate un'intervista al prof. Jacopo Buongiorno, Direttore del Centro per i sistemi avanzati di energia nucleare al MIT. Inoltre, in descrizione al video abbiamo lasciato ulteriori documenti, paper ed analisi utili a contestualizzare il tema.")
 # URL del video su YouTube
 video_url = "https://youtu.be/FOqnCk1Uv7I"
 
@@ -22,16 +68,16 @@ st.video(video_url)
 
 st.divider()
 pluto=False
-agree = st.checkbox('Sono consapevole dei limiti del modello')
+agree = st.checkbox('Sono consapevole dei limiti del modello e ho compreso la natura del modello.')
 if agree:
-    agree_2 = st.checkbox('Sono consapevole che, come ogni modello, anche questo è errato')
+    agree_2 = st.checkbox('Sono consapevole che, come ogni modello, anche questo è errato.')
     if agree_2:
-        agree_3 = st.checkbox('Sono consapevole che le risposte del modello dipendono dalle ipotesi che io andrò a selezionare, oltre che dalla struttura dello stesso')
+        agree_3 = st.checkbox('Sono consapevole che le risposte del modello dipendono dalle ipotesi che io andrò a selezionare, oltre che dalla struttura dello stesso.')
         if agree_3:
 
             modello = st.radio(
                 "Che profilo vuoi impostare al tuo modello?",
-                [ 'BEST CASE SCENARIO',"SCENARIO MEDIANO", 'TASSI BASSI', 'SUPER APPRENDIMENTO', "WORST CASE SCENARIO",'SMR' ,"PERSONALIZZA MODELLO"], help="Selezionando un modello verranno valorizzati in modo automatico i vari parametri, questi verranno riportati nei singoli grafici. Se si preferisce agira autonomamente nella modifica dei parametri è sufficiente selezionare l'opzione per personalizzare il modello")
+                [ 'BEST CASE SCENARIO',"SCENARIO MEDIANO", 'TASSI BASSI', 'SUPER APPRENDIMENTO', "WORST CASE SCENARIO",'SMR' ,"PERSONALIZZA MODELLO"], help="Selezionando un modello verranno valorizzati in modo automatico i vari parametri, questi saranno riportati nei singoli grafici. Se si preferisce valorizzare autonomamente i parametri è sufficiente selezionare l'opzione personalizza modello")
 
             if modello == "SCENARIO MEDIANO":
                 i = 4
@@ -153,7 +199,7 @@ if agree:
 
                 occupati_diretti = 500
                 occupati_indiretti = 33
-                occupati_costruzione=2200
+                occupati_costruzione=1800
                 occupati_indotto =50
                 pil_diretti = 100
                 pil_indiretti = 33
@@ -167,59 +213,62 @@ if agree:
             elif modello=="PERSONALIZZA MODELLO":
 
                 i = st.slider(
-                    'Che tasso di  interesse prevedi per il costo del debito?',
+                    'Che tasso di  interesse prevedi per il costo del finanziamento? Dato espresso in termini percentuali',
                     4, 20,4, help="Il tasso di interesse influenza il costo complessivo dell'operazione")
                 t = st.slider(
-                    'In quanto tempo stimi venga realizzato il FOAK?',
-                    4, 30,7, help="FOAK=First-of-A-Kind, ovvero il primo reattore realizzato. Il tempo dei successivi reattori è dato dal tempo del FOAK e dal tasso di apprendimento. Il modello è realizzato in modo da far partire un reattore ogni anno.")
-                apprendimento = st.slider(
-                    'Che tasso di apprendimento stimi? Se negativo, il tasso va ad aumentare tempi di realizzo e costi.',
-                    -10, 10,3,help="Il tasso di apprendimento stima la curva di apprendimento che si prevede avrà il progetto. Il tasso per il modello avrà effetto sia sul tempo di realizzazione che sul costo con pari entità")
-                Progetti = st.slider(
-                    'Su quanti reattori vuoi basare il modello?',
-                    1, 35,26,help="Il modello si basa sull'ipotesi che tutti i reattori appartengano allo stesso tipo")
-                partenza = 2026
+                    'In quanto tempo stimi venga realizzato il FOAK? Dato espresso in anni.',
+                    4, 30,12, help="Il tempo dei successivi reattori è dato dal tempo del FOAK e dal tasso di apprendimento.")
+
 
                 Costo_base=st.slider(
-                    'Quanto stimi possa ammontare il costo overnight del FOAK? Seleziona un valore in miliardi di €',
-                    0.5, 20.0,10.0, help="Il costo overnight rappresenta il costo complessivo per realizzare il reattore, al netto degli interessi ")
+                    'A quanto stimi possa ammontare il costo overnight del FOAK? Dato espresso in miliardi di €.',
+                    0.5, 20.0,10.0, help="Il costo overnight rappresenta il costo complessivo per realizzare il reattore, al netto del costo di finanziamento.")
+
+                apprendimento = st.slider(
+                    'A quanto stimi il tasso di apprendimento? Dato espresso in termini percentuali.',
+                    -10, 10,3,help="Il tasso di apprendimento stima la curva di apprendimento che si prevede avrà il progetto. Il tasso per il modello avrà effetto sia sul tempo di realizzazione che sul costo con pari entità. Se negativo, il tasso va ad aumentare tempi e costi di realizzazione.")
+                Progetti = st.slider(
+                    'Su quanti reattori vuoi basare il modello?',
+                    1, 35,26,help="Il modello si basa sull'ipotesi che tutti i reattori appartengano allo stesso tipo.")
+                partenza = 2026
+
                 occupati_costruzione = st.slider(
-                    f'A quanto ammonta la stima di occupati/anno per la costruzione del reattore?',
-                    1000, 2500, 1800,
-                    help="Il PIL viene stimato attraveso l'occupazione per il valore aggiunto dato da ogni occupato (diretto, indiretto e fase di costruzione). Il numero di occupati è valorizzato in base allo stato di avanzamento del progetto")
+                    f'A quanto ammonta la stima di occupati/anno per la costruzione del reattore? Dato in FTE.',
+                    1000, 2500, 2200,
+                    help="L'occupazione complessiva per la fase di costruzione è influenzata dai tempi di realizzazione del singolo reattore")
                 occupati_diretti=st.slider(
-                    f"A quanto ammonta la stima di occupati/anno per l'operativià del reattore?",
-                    300, 900,600, help="Il PIL viene stimato attraveso l'occupazione per il valore aggiunto dato da ogni occupato diretto. Il numero di occupati è valorizzato in base allo stato di avanzamento del progetto")
+                    f"A quanto ammonta la stima di occupati/anno durante l'operativià del reattore? Dato in FTE.",
+                    300, 900,600, help="L'occupazione complessiva durante l'operativià è influenzata dall'entrata in funzione del singolo reattore")
 
                 occupati_indiretti=st.slider(
-                    f'A quanto ammonta la stima di occupati/anno indiretti rispetto agli occupati/anno diretti (costruzione + operatività)?',
-                    0, 100,33, help="Il PIL viene stimato attraveso l'occupazione per il valore aggiunto dato da ogni occupato diretto. Il numero di occupati è valorizzato in base allo stato di avanzamento del progetto")
+                    f'A quanto ammonta la stima di occupati/anno indiretti rispetto agli occupati/anno diretti (costruzione + operatività)? Dato in termini percentuali',
+                    0, 100,33, help="L'occupazione complessiva indiretta si riferisce alla catena del valore, pertanto è influenzata sia dagli occupati diretti.")
 
                 occupati_indotto=st.slider(
-                    f'A quanto ammonta la stima di occupati/anno indotto rispetto agli occupati/anno diretti e indiretti?',
-                    0, 100,66, help="Il PIL viene stimato attraveso l'occupazione per il valore aggiunto dato da ogni occupato diretto. Il numero di occupati è valorizzato in base allo stato di avanzamento del progetto")
+                    f'A quanto ammonta la stima di occupati/anno indotti rispetto agli occupati/anno diretti e indiretti? Dato in termini percentuali.',
+                    0, 100,66, help="L'occupazione complessiva indiretta si riferisce ai posti di lavoro indotti dall'industria dell'energia nucleare darivanti dal flusso circolare di reddito nell'economia nazionale, pertanto è influenzata sia dagli occupati diretti che dagli occupati indiretti.")
 
                 pil_costruzione=st.slider(
-                    f"Quanto valore aggiunto prevedi che possa generare un dipendente nella fase di costruzione del reattore in più (o in meno) rispetto alla media nazionale?",
-                    -100, 100,10, help="Ogni occupato (diretto, indiretto, nella fase di costruzione) genera un valore aggiunto la cui sommatoria può essere una buona stima del PIL")
+                    f"A quanto ammonta la stima di valore aggiunto prodotto per ogni singolo occupato nella fase di costruzione del reattore rispetto alla media nazionale? Dato in termini percentuali.",
+                    -100, 100,10)
 
                 pil_diretti=st.slider(
-                    f"Quanto valore aggiunto prevedi che possa generare un dipendente diretto nel settore dell'energia nucleare in più (o in meno) rispetto alla media nazionale?",
-                    0, 150,100, help="Ogni occupato diretto genera un valore aggiunto la cui sommatoria può essere una buona stima del PIL")
+                    f"A quanto ammonta la stima di valore aggiunto prodotto per ogni singolo occupato coinvolto nell'operatività del singolo reattore rispetto alla media nazionale? Dato in termini percentuali.",
+                    0, 150,100)
 
                 pil_indiretti=st.slider(
-                    f"Quanto valore aggiunto prevedi che possa generare un dipendente indiretto nel settore dell'energia nucleare in più (o in meno) rispetto alla media nazionale?",
-                    -100, 100,10, help="Ogni occupato diretto genera un valore aggiunto la cui sommatoria può essere una buona stima del PIL")
+                    f"A quanto ammonta la stima di valore aggiunto prodotto per ogni singolo occupato indiretto nel settore dell'energia nucleare rispetto alla media nazionale? Dato in termini percentuali.",
+                    -100, 100,10)
                 pil_indotto=st.slider(
-                    f"Quanto valore aggiunto prevedi che possa generare un dipendente indotto nel settore dell'energia nucleare in più (o in meno) rispetto alla media nazionale?",
-                    -100, 100,-10, help="Ogni occupato diretto genera un valore aggiunto la cui sommatoria può essere una buona stima del PIL")
+                    f"A quanto ammonta la stima di valore aggiunto prodotto per ogni singolo occupato indotto dall'industria dell'energia nucleare rispetto alla media nazionale? Dato in termini percentuali.",
+                    -100, 100,-10)
                 pil_eco=st.slider(
-                    f"Si prevede un aumento della produttività nel settore dell'industria ed energia grazie all'adozione dell'energia nucleare, alla fine del progetto?",
-                    0, 100,5, help="Il PIL oltre ad aumentare per effetto dell'occupazione diretta e indiretta aggiuntiva, può aumentare a seguito della migliorata produttività dell'economia grazie al cambiamento tecnologico. Qui è possibile valorizzare un coefficiente che andrà a moltiplicare il valore aggiunto per occupato dell'intera economia.")
+                    f"Alla fine del progetto, a quanto ammonta la variazione della produttività nel settore dell'industria ed energia grazie all'adozione dell'energia nucleare? Dato in termini percentuali.",
+                    0, 100,5, help="Il PIL oltre ad aumentare per effetto dell'occupazione diretta e indiretta aggiuntiva, può aumentare a seguito della migliorata produttività dell'economia grazie al cambiamento tecnologico. Qui è possibile valorizzare un coefficiente che andrà a moltiplicare il valore aggiunto per occupato del settore dell'Industria, che pesa circa il 25% del PIL.")
 
                 genre = st.radio(
                     "Vuoi che il modello preveda un taglio della spesa pensionistica?",
-                    ["No", "dell'1% di pil", "del 2% del pil"], help='Sulla base delle stime RGS il modello calcola la spesa epnsionistica, è possibile ridurre il suo impatto sui conti pubblici di alcuni punti di pil attraverso la selezione multipla.')
+                    ["No", "dell'1% di pil", "del 2% del pil"], help='Sulla base delle stime RGS il modello calcola la spesa epnsionistica, è possibile ridurre il suo impatto sui conti pubblici di alcuni punti di pil attraverso la selezione.')
 
                 if genre == "No":
                     taglio=0
@@ -255,6 +304,7 @@ if agree:
             df = pd.DataFrame({'progetti': a_results,'Tempo':t_results, 'costo_netto':c_results})
             df['Interessi']=df.progetti-df.costo_netto
 
+            # Assumendo che df sia il tuo DataFrame e che contenga le colonne necessarie
 
 
 
@@ -532,7 +582,8 @@ if agree:
             layout = go.Layout(
                 title='Andamento Indebitamento Netto in rapporto al PIL, confronto fra <br> <span style="color:#FF0000;">RGS - SCENARIO NAZIONALE BASE</span> e <span style="color:#1A76FF;">STIMA MODELLO NUCLEARE</span>',
                 xaxis=dict(title='Anno'),
-                yaxis=dict(title='Indebitamento Netto')
+                yaxis=dict(title='Indebitamento Netto'),
+                showlegend=False
             )
 
             # Creare la figura
@@ -541,27 +592,30 @@ if agree:
             # Mostrare il grafico
             st.plotly_chart(fig)
 
-            # Creare le tracce per il grafico a linee
-            trace1 = go.Scatter(x=df_def['Anno'], y=df_def['Numero costruttori nucleare'], mode='lines', name='Numero costruttori nucleare')
-            trace2 = go.Scatter(x=df_def['Anno'], y=df_def['Numero addetti indiretti nucleare'], mode='lines', name='Numero addetti indiretti nucleare')
-            trace3 = go.Scatter(x=df_def['Anno'], y=df_def['Numero addetti ope nucleare'], mode='lines', name='Numero addetti operatività nucleare')
-            trace4 = go.Scatter(x=df_def['Anno'], y=df_def['Numero addetti indotti nucleare'], mode='lines', name='Numero addetti indotti nucleare')
 
-            # Creare il layout del grafico
+
+            trace1 = go.Scatter(x=df_def['Anno'], y=df_def['Numero costruttori nucleare'], mode='lines',
+                                name='Numero costruttori nucleare', line=dict(color="#cc6100"))
+            trace2 = go.Scatter(x=df_def['Anno'], y=df_def['Numero addetti indiretti nucleare'], mode='lines',
+                                name='Numero addetti indiretti nucleare', line=dict(color="#a34372"))
+            trace3 = go.Scatter(x=df_def['Anno'], y=df_def['Numero addetti ope nucleare'], mode='lines',
+                                name='Numero addetti operatività nucleare', line=dict(color="#74ba45"))
+            trace4 = go.Scatter(x=df_def['Anno'], y=df_def['Numero addetti indotti nucleare'], mode='lines',
+                                name='Numero addetti indotti nucleare',
+                                line=dict(color="#9d9d34"))  # Nuova traccia per gli indotti
+
+            # Creare il layout del grafico, includendo il titolo personalizzato e rimuovendo la legenda
             layout = go.Layout(
-                title='Occupazione nucleare',
+                title=f'Occupazione nucleare scomposta in <br> <span style="color:#cc6100;">costruttori nucleare</span>, <span style="color:#a34372;">addetti indiretti nucleare</span>, <span style="color:#74ba45;">addetti diretti nucleare</span>, e <span style="color:#9d9d34;">addetti indotti nucleare</span>',
                 xaxis=dict(title='Anno'),
-                yaxis=dict(title='Occupazione')
+                yaxis=dict(title='N° Occupati'),
+                showlegend=False  # Rimuove la legenda
             )
 
-            # Creare la figura
+            # Creare la figura aggiungendo tutte le tracce
             fig = go.Figure(data=[trace1, trace2, trace3, trace4], layout=layout)
-
-            # Mostrare il grafico
             st.plotly_chart(fig)
 
-
-            import streamlit as st
 
             # Definizione del testo con le formule LaTeX
             latex_text = r"""
