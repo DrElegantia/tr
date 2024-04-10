@@ -31,7 +31,7 @@ if agree:
 
             modello = st.radio(
                 "Che profilo vuoi impostare al tuo modello?",
-                [ 'BEST CASE SCENARIO',"SCENARIO MEDIANO", 'TASSI BASSI', 'SUPER APPRENDIEMNTO', "WORST CASE SCENARIO",'SMR' ,"PERSONALIZZA MODELLO"], help="Selezionando un modello verranno valorizzati in modo automatico i vari parametri, questi verranno riportati nei singoli grafici. Se si preferisce agira autonomamente nella modifica dei parametri è sufficiente selezionare l'opzione per personalizzare il modello")
+                [ 'BEST CASE SCENARIO',"SCENARIO MEDIANO", 'TASSI BASSI', 'SUPER APPRENDIMENTO', "WORST CASE SCENARIO",'SMR' ,"PERSONALIZZA MODELLO"], help="Selezionando un modello verranno valorizzati in modo automatico i vari parametri, questi verranno riportati nei singoli grafici. Se si preferisce agira autonomamente nella modifica dei parametri è sufficiente selezionare l'opzione per personalizzare il modello")
 
             if modello == "SCENARIO MEDIANO":
                 i = 4
